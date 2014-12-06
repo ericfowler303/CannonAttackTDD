@@ -10,6 +10,10 @@ namespace CannonAttack
         public static readonly int MAXANGLE = 90;
         public static readonly int MINANGLE = 1;
         private readonly int MAXVELOCITY = 300000000;
+        private readonly int BURSTRADIUS = 50;
+        private int distanceOfTarget;
+        private readonly int MAXDISTANCEOFTARGET = 20000;
+        private readonly double GRAVITY = 9.8;
         private string CannonID;
         public string ID
         {
@@ -22,11 +26,19 @@ namespace CannonAttack
                 CannonID = value;
             }
         }
+        public int DistanceOfTarget
+        {
+            get { return distanceOfTarget; }
+            set { distanceOfTarget = value; }
+        }
 
         private static Cannon cannonSingletonInstance;
         static readonly object padlock = new object();
         private Cannon()
         {
+            //by default we setup a random target
+            Random r = new Random();
+            SetTarget(r.Next(MAXDISTANCEOFTARGET));
         }
         public static Cannon GetInstance()
         {
@@ -42,15 +54,43 @@ namespace CannonAttack
 
         public Tuple<bool, string> Shoot(int angle, int velocity)
         {
-            if (velocity > MAXVELOCITY)
+            string message;
+            bool hit;
+            int distanceOfShot = CalculateDistanceOfCannonShot(angle, velocity);
+            if (distanceOfShot.WithinRange(this.distanceOfTarget, BURSTRADIUS)) 
             {
-                return Tuple.Create(false, "Velocity of the cannon cannot travel faster than the speed of light");
-            } 
-            if (angle > MAXANGLE || angle < MINANGLE) //Angle must be //between 0 and 90 degrees
-            {
-                return Tuple.Create(false, "Angle Incorrect");
+                message = "Hit";
+                hit = true;
             }
-            return Tuple.Create(true, "Angle OK"); //Not //going to do the calculation just yet
+            else
+            {
+                message = String.Format("Missed cannonball landed at {0} meters", distanceOfShot);
+                hit = false;
+            }
+            return Tuple.Create(hit, message);
+        }
+        public void SetTarget(int distanceOfTarget)
+        {
+            if (!distanceOfTarget.Between(0, MAXDISTANCEOFTARGET))
+            {
+                throw new ApplicationException(String.Format("Target distance must be between 1 and {0} meters", MAXDISTANCEOFTARGET));
+            }
+            this.distanceOfTarget = distanceOfTarget;
+        }
+
+        public int CalculateDistanceOfCannonShot(int angle, int velocity)
+        {
+            int time = 0;
+            double height = 0;
+            double distance = 0;
+            double angleInRadians = (3.1415926536 / 180) * angle;
+            while (height >= 0)
+            {
+                time++;
+                distance = velocity * Math.Cos(angleInRadians) * time;
+                height = (velocity * Math.Sin(angleInRadians) * time) - (GRAVITY * Math.Pow(time, 2)) / 2;
+            }
+            return (int)distance;
         }
     }
 }

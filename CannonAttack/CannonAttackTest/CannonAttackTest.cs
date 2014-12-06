@@ -37,6 +37,20 @@ namespace CannonAttackTest
         {
             var shot = cannon.Shoot(45, 300000001);
             Assert.IsFalse(shot.Item1);
+        }
+        [TestMethod]
+        public void TestCannonShootMiss()
+        {
+            cannon.SetTarget(4000);
+            var shot = cannon.Shoot(45, 350);
+            Assert.IsTrue(shot.Item2 == "Missed cannonball landed at 12621 meters");
+        }
+        [TestMethod]
+        public void TestCannonShootHit()
+        {
+            cannon.SetTarget(12621);
+            var shot = cannon.Shoot(45, 350);
+            Assert.IsTrue(shot.Item2 == "Hit");
         } 
     }
 }
