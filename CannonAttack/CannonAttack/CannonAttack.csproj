@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Cannon.cs" />
     <Compile Include="CannonAttack.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

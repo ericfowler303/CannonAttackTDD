@@ -50,7 +50,20 @@ namespace CannonAttackTest
         {
             cannon.SetTarget(12621);
             var shot = cannon.Shoot(45, 350);
-            Assert.IsTrue(shot.Item2 == "Hit");
+            Assert.IsTrue(shot.Item2 == "Hit - 1 Shot(s)");
+        } 
+
+        [TestMethod]
+        public void TestCannonCountShots()
+        {
+            cannon.SetTarget(12621);
+            var shot = cannon.Shoot(45, 350);
+            Assert.IsTrue(shot.Item2 == "Hit - 1 Shot(s)", "Number of shots:" + cannon.Shots);
+        }
+        [TestInitialize]
+        public void ResetCannonObject()
+        {
+            cannon.Reset();
         } 
     }
 }

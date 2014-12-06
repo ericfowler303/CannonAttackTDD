@@ -31,6 +31,14 @@ namespace CannonAttack
             get { return distanceOfTarget; }
             set { distanceOfTarget = value; }
         }
+        private int shots;
+        public int Shots
+        {
+            get
+            {
+                return shots;
+            }
+        } 
 
         private static Cannon cannonSingletonInstance;
         static readonly object padlock = new object();
@@ -38,8 +46,12 @@ namespace CannonAttack
         {
             //by default we setup a random target
             Random r = new Random();
-            SetTarget(r.Next(MAXDISTANCEOFTARGET));
+            SetTarget(r.Next((int)MAXDISTANCEOFTARGET));
         }
+        public void Reset()
+        {
+            shots = 0;
+        } 
         public static Cannon GetInstance()
         {
             lock (padlock)
@@ -59,7 +71,7 @@ namespace CannonAttack
             int distanceOfShot = CalculateDistanceOfCannonShot(angle, velocity);
             if (distanceOfShot.WithinRange(this.distanceOfTarget, BURSTRADIUS)) 
             {
-                message = "Hit";
+                message = String.Format("Hit - {0} Shot(s)", shots);
                 hit = true;
             }
             else
@@ -90,6 +102,7 @@ namespace CannonAttack
                 distance = velocity * Math.Cos(angleInRadians) * time;
                 height = (velocity * Math.Sin(angleInRadians) * time) - (GRAVITY * Math.Pow(time, 2)) / 2;
             }
+            shots++;
             return (int)distance;
         }
     }
