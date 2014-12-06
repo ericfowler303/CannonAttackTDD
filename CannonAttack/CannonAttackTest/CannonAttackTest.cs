@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CannonAttack;
 
 namespace CannonAttackTest
 {
@@ -7,8 +8,10 @@ namespace CannonAttackTest
     public class CannonAttackTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestCannonIDValid()
         {
-        }
+            Cannon cannon = new Cannon();
+            Assert.IsNotNull(cannon.ID);
+        } 
     }
 }
