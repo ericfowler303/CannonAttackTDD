@@ -10,8 +10,15 @@ namespace CannonAttackTest
         [TestMethod]
         public void TestCannonIDValid()
         {
-            Cannon cannon = new Cannon();
+            Cannon cannon = Cannon.GetInstance();
             Assert.IsNotNull(cannon.ID);
-        } 
+        }
+        [TestMethod]
+        public void TestCannonMultipleInstances()
+        {
+            Cannon cannon = Cannon.GetInstance();
+            Cannon cannon2 = Cannon.GetInstance();
+            Assert.IsTrue(cannon == cannon2);
+        }
     }
 }

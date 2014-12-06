@@ -19,5 +19,22 @@ namespace CannonAttack
                 CannonID = value;
             }
         }
+
+        private static Cannon cannonSingletonInstance;
+        static readonly object padlock = new object();
+        private Cannon()
+        {
+        }
+        public static Cannon GetInstance()
+        {
+            lock (padlock)
+            {
+                if (cannonSingletonInstance == null)
+                {
+                    cannonSingletonInstance = new Cannon();
+                }
+                return cannonSingletonInstance;
+            }
+        }
     }
 }
