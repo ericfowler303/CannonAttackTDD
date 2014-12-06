@@ -9,6 +9,7 @@ namespace CannonAttack
         private readonly string CANNONID = "Human";
         public static readonly int MAXANGLE = 90;
         public static readonly int MINANGLE = 1;
+        private readonly int MAXVELOCITY = 300000000;
         private string CannonID;
         public string ID
         {
@@ -41,6 +42,10 @@ namespace CannonAttack
 
         public Tuple<bool, string> Shoot(int angle, int velocity)
         {
+            if (velocity > MAXVELOCITY)
+            {
+                return Tuple.Create(false, "Velocity of the cannon cannot travel faster than the speed of light");
+            } 
             if (angle > MAXANGLE || angle < MINANGLE) //Angle must be //between 0 and 90 degrees
             {
                 return Tuple.Create(false, "Angle Incorrect");

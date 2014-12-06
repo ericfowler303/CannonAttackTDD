@@ -32,5 +32,11 @@ namespace CannonAttackTest
             var shot = cannon.Shoot(95, 100);
             Assert.IsFalse(shot.Item1);
         }
+        [TestMethod]
+        public void TestCannonShootVelocityGreaterThanSpeedOfLight()
+        {
+            var shot = cannon.Shoot(45, 300000001);
+            Assert.IsFalse(shot.Item1);
+        } 
     }
 }
