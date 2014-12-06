@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 namespace CannonAttack
 {
-    public class Cannon
+    public sealed class Cannon
     {
-        public string ID {
+        private readonly string CANNONID = "Human";
+        private string CannonID;
+        public string ID
+        {
             get
             {
-                return "Human";
+                return (String.IsNullOrWhiteSpace(CannonID)) ? CANNONID : CannonID;
+            }
+            set
+            {
+                CannonID = value;
             }
         }
     }
